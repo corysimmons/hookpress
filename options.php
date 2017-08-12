@@ -9,7 +9,6 @@ getTb = function() {
 }
 
 var getHooks = function getHooks() {
-	console.log('getHooks');
 	var tb = getTb();
 	var type = tb.find('.newtype:checked').attr('id');
 	if (type == 'action') {
@@ -21,7 +20,7 @@ var getHooks = function getHooks() {
 		tb.find('#filtermessage').show();
 	}
 	$.ajax({type:'POST',
-		url:'admin-ajax.php',
+		url:ajaxurl,
 		data:'action=hookpress_get_hooks&type='+type,
 		beforeSend:function(){
 			tb.find('#newhook').html('<div class="webhooks-spinner">&nbsp;</div>');
@@ -35,12 +34,11 @@ var getHooks = function getHooks() {
 }
 
 var getFields = function getFields() {
-	console.log('getFields');
 	var tb = getTb();
 	var hook = tb.find('#newhook').val();
 	var type = tb.find('.newtype:checked').attr('id');
 	$.ajax({type:'POST',
-		url:'admin-ajax.php',
+		url:ajaxurl,
 		data:'action=hookpress_get_fields&hook='+hook+'&type='+type,
 		beforeSend:function(){
 			tb.find('#newfields').html('<div class="webhooks-spinner">&nbsp;</div>');
@@ -53,7 +51,6 @@ var getFields = function getFields() {
 };
 
 var getEditHooks = function getEditHooks() {
-	console.log('getEditHooks');
 	var tb = getTb();
 	var type = tb.find('.newtype:checked').attr('id');
 	if (type == 'action') {
@@ -65,7 +62,7 @@ var getEditHooks = function getEditHooks() {
 		tb.find('#filtermessage').show();
 	}
 	$.ajax({type:'POST',
-		url:'admin-ajax.php',
+		url:ajaxurl,
 		data:'action=hookpress_get_hooks&type='+type,
 		beforeSend:function(){
 			tb.find('#edithook').html('<div class="webhooks-spinner">&nbsp;</div>');
@@ -79,12 +76,11 @@ var getEditHooks = function getEditHooks() {
 }
 
 var getEditFields = function getEditFields() {
-	console.log('getEditFields');
 	var tb = getTb();
 	var hook = tb.find('#edithook').val();
 	var type = tb.find('.newtype:checked').attr('id');
 	$.ajax({type:'POST',
-		url:'admin-ajax.php',
+		url:ajaxurl,
 		data:'action=hookpress_get_fields&hook='+hook+'&type='+type,
 		beforeSend:function(){
 			tb.find('#editfields').html('<div class="webhooks-spinner">&nbsp;</div>');
@@ -97,7 +93,6 @@ var getEditFields = function getEditFields() {
 };
 
 var editSubmit = function editSubmit() {
-	console.log('editSubmit');
 	var tb = getTb();
 	if (!tb.find('#editfields').val()) {
 		tb.find('#editindicator').html('<small><?php _e("You must select at least one field to send.","hookpress");?></small>');
@@ -111,9 +106,9 @@ var editSubmit = function editSubmit() {
 	tb.find('#editindicator').html('<div class="webhooks-spinner">&nbsp;</div>');
 
 	id = tb.find('#edit-hook-id').val();
-	
+
 	$.ajax({type: 'POST',
-		url:'admin-ajax.php',
+		url:ajaxurl,
 		data:'action=hookpress_add_fields'
 				 +'&fields='+tb.find('#editfields').val().join()
 				 +'&url='+tb.find('#editurl').val()
@@ -145,7 +140,6 @@ var editSubmit = function editSubmit() {
 };
 
 var enforceFirst = function enforceFirst() {
-	console.log('enforceFirst');
 	var tb = getTb();
 	var type = tb.find('.newtype:checked').attr('id');
 	if (type == 'action')
@@ -154,7 +148,6 @@ var enforceFirst = function enforceFirst() {
 }
 
 var newSubmit = function newSubmit() {
-	console.log('newSubmit');
 	var tb = getTb();
 	if (!tb.find('#newfields').val()) {
 		tb.find('#newindicator').html('<small><?php _e("You must select at least one field to send.","hookpress");?></small>');
@@ -168,7 +161,7 @@ var newSubmit = function newSubmit() {
 	tb.find('#newindicator').html('<div class="webhooks-spinner">&nbsp;</div>');
 
 	$.ajax({type: 'POST',
-		url:'admin-ajax.php',
+		url:ajaxurl,
 		data:'action=hookpress_add_fields'
 				 +'&fields='+tb.find('#newfields').val().join()
 				 +'&url='+tb.find('#newurl').val()
@@ -203,10 +196,9 @@ var newSubmit = function newSubmit() {
 };
 
 var deleteHook = function deleteHook(id) {
-	console.log('deleteHook');
 	var nonce = $('#delete-nonce-' + id).val();
 	$.ajax({type: 'POST',
-		url:'admin-ajax.php',
+		url:ajaxurl,
 		beforeSend:function(){$('#' + id + ' span.edit').html('<div class="webhooks-spinner">&nbsp;</div>')},
 		data:'action=hookpress_delete_hook&id='+id + '&_nonce=' +nonce,
 		success:function(html){
@@ -221,9 +213,8 @@ var deleteHook = function deleteHook(id) {
 }
 
 var setHookEnabled = function setHookEnabled(id, nonce, boolean) {
-	console.log('setHookEnabled');
 	$.ajax({type: 'POST',
-		url:'admin-ajax.php',
+		url:ajaxurl,
 	beforeSend:function(){$('#' + id + ' span.edit').html('<div class="webhooks-spinner">&nbsp;</div>')},
 		data:'action=hookpress_set_enabled&id='+id+'&_nonce='+nonce+'&enabled='+boolean,
 		success:function(html){
@@ -242,10 +233,9 @@ var setHookEnabled = function setHookEnabled(id, nonce, boolean) {
 }
 
 var setupEditHook = function setupEditHook(id) {
-	console.log('setupEditHook');
 	var tb = getTb();
 	$.ajax({type: 'POST',
-		url:'admin-ajax.php',
+		url:ajaxurl,
 		data:'action=hookpress_edit_hook&id='+id,
 		success: function(html){
 			$('#TB_ajaxContent').html(html)
@@ -341,8 +331,8 @@ var setEvents = function setEvents() {
 
 <div class="wrap">
 		<h2>
-			<?php _e('HookPress','hookpress');?> <small><?php 
-			
+			<?php _e('HookPress','hookpress');?> <small><?php
+
 			$display_version = $hookpress_version;
 			$split = explode('.',$display_version);
 			if (strlen($split[1]) != 1) {
@@ -352,7 +342,7 @@ var setEvents = function setEvents() {
 			echo $display_version;
 			?></small>
 		</h2>
-		
+
 	<form method="post">
 
 			<a href='http://tinyurl.com/donatetomitcho' target='_new'><img src="https://www.paypal.com/en_US/i/btn/btn_donate_SM.gif" name="submit" alt="<?php _e('Donate to mitcho (Michael Yoshitaka Erlewine) for this plugin via PayPal');?>" title="<?php _e('Donate to mitcho (Michael Yoshitaka Erlewine) for this plugin via PayPal','hookpress');?>" style="float:right" /></a>
@@ -364,7 +354,7 @@ var setEvents = function setEvents() {
 <?php echo hookpress_print_webhooks_table();?>
 
 	<p><input id="newwebhook" class="thickbox button" type="button" value="<?php _e("Add webhook",'hookpress');?>" title="<?php _e('Add new webhook','hookpress');?>" alt="#TB_inline?height=330&width=500&inlineId=hookpress-webhook"/></p>
-		
+
 </form>
 
 <div id='hookpress-webhook' style='display:none;'>
